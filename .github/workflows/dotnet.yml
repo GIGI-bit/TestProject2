@@ -1,6 +1,5 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: .NET
 
 on:
@@ -24,5 +23,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Check format code
+      run: |
+        dotnet tool install --global dotnet-format
+        dotnet format --verify-no-changes || (echo "Formatting issues found. Please run 'dotnet format' locally." && exit 1)
     - name: Test
       run: dotnet test --no-build --verbosity normal
